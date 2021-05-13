@@ -1,0 +1,6 @@
+FROM nginx:mainline-alpine
+
+RUN apk add --no-cache certbot
+
+RUN certbot certonly --standalone -d easytestapp4.com,www.easytestapp4.com --email cdebaggi@checkpoint.com -n --agree-tos --expand
+

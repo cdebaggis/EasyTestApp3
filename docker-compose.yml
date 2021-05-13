@@ -4,7 +4,7 @@ services:
   nodejs:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-node
     image: nodejs
     container_name: nodejs
     restart: unless-stopped
@@ -12,6 +12,9 @@ services:
       - app-network
 
   webserver:
+    build: 
+      context: .
+      dockerfile: Dockerfile-web
     image: nginx:mainline-alpine
     container_name: webserver
     restart: unless-stopped
@@ -28,17 +31,6 @@ services:
       - nodejs
     networks:
       - app-network
-
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - web-root:/var/www/html
-    depends_on:
-      - webserver
-    command: certonly --webroot --webroot-path=/var/www/html --email christopherdebaggis1@gmail.com --agree-tos --no-eff-email --force-renewal -d easytestapp4.com  -d www.easytestapp4.com
 
 volumes:
   certbot-etc:
